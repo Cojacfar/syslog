@@ -18,10 +18,13 @@ import SocketServer
 import os
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
 
 path = os.path.realpath(__file__)
 logging.basicConfig(level=logging.INFO, format='%(message)s', datefmt='', filename=LOG_FILE, filemode='a')
+
+# This is going to setup the database. Should be refactored into another file later...
 engine = create_engine('sqlite:////' + path + 'logs.db')
 Base = declarative_base()
 
@@ -51,6 +54,8 @@ class Entry(Base):
 
     def __repr__(self):
         return '<ID=%d>' % self.ID
+
+# END DATABASE INITIALIZATION
 
 
 class SyslogUDPHandler(SocketServer.BaseRequestHandler):
